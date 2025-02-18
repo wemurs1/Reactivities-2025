@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import agent from '../app/agent';
+import agent from '../api/agent';
 import { useLocation } from 'react-router';
 
 export const useActivities = (id?: string) => {
