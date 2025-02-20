@@ -36,11 +36,13 @@ export default function ActivityDetailsInfo({ activity }: Props) {
         <Grid2 size={1}>
           <Place color='info' fontSize='large' />
         </Grid2>
-        <Grid2 size={11}>
+        <Grid2 size={11} display='flex' justifyContent='space-between' alignItems='center'>
           <Typography>
             {activity.venue}, {activity.city}
           </Typography>
-          <Button onClick={() => setMapOpen(!mapOpen)}>{mapOpen ? 'Hide map' : 'Show map'}</Button>
+          <Button sx={{ whiteSpace: 'nowrap', mx: 2 }} onClick={() => setMapOpen(!mapOpen)}>
+            {mapOpen ? 'Hide map' : 'Show map'}
+          </Button>
         </Grid2>
       </Grid2>
       {mapOpen && (
