@@ -1,6 +1,7 @@
 using Application.Activities.DTO;
 using Application.Core;
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
@@ -19,13 +20,12 @@ public class GetActivityDetails
         public async Task<Result<ActivityDTO>> Handle(Query request, CancellationToken cancellationToken)
         {
             var activity = await context.Activities
-                .Include(x => x.Attendees)
-                .ThenInclude(x => x.User)
+                .ProjectTo<ActivityDTO>(mapper.ConfigurationProvider)
                 .FirstOrDefaultAsync(x => request.Id == x.Id, cancellationToken);
 
             if (activity == null) return Result<ActivityDTO>.Failure("Activity not found", 404);
 
-            return Result<ActivityDTO>.Success(mapper.Map<ActivityDTO>(activity));
+            return Result<ActivityDTO>.Success(activity);
         }
     }
 }
