@@ -1,4 +1,5 @@
 using API.Middleware;
+using API.SignalR;
 using Application.Activities.Queries;
 using Application.Activities.Validators;
 using Application.Core;
@@ -21,6 +22,7 @@ builder.Services.AddControllers(opt =>
     var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
     opt.Filters.Add(new AuthorizeFilter(policy));
 });
+builder.Services.AddSignalR();
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
@@ -59,6 +61,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 app.MapGroup("api").MapIdentityApi<User>();
+app.MapHub<CommentHub>("/comments");
 
 using var scope = app.Services.CreateScope();
 var services = scope.ServiceProvider;
